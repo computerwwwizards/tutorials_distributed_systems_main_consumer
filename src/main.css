@@ -1,0 +1,26 @@
+@layer gloabal, layout, components, utils;
+
+@layer global{
+  body{
+    box-sizing: border-box;
+  }
+
+  body *{
+    box-sizing: inherit;
+  }
+
+  body, h1, h2, h3, p, div{
+    margin: 0;
+  }
+
+  :scope{
+    --color-bg-primary: #191919;
+    --color-fg-primary: #ffff;
+  }
+
+  body{
+    min-height: 100vh;
+    background-color: var(--color-bg-primary);
+    color: var(--color-fg-primary);
+  }
+}

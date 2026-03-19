@@ -1,7 +1,7 @@
 import type { GloablCtx } from "../types"
 
 export default function plugin(){
-  throw new Error('Not implemented')
+  
 }
 
 if(import.meta.env.DEV){

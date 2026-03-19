@@ -2,7 +2,7 @@ import { BasicContainer } from "@computerwwwizards/dependency-injection";
 import type { TopLevelContainerServices } from "./index.types";
 import mainPlugin from './top-level-container';
 
-import './main.css'
+
 
 const topLevelCtx = new BasicContainer<TopLevelContainerServices>()
 

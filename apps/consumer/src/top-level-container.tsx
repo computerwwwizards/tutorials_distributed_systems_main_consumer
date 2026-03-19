@@ -7,9 +7,18 @@ import {
 import type { TopLevelCtx } from "./index.types";
 import { BaseAppService } from "./services/base-app";
 import type { DefaultAuthStatus, IAppService } from "./top-level-container.types";
+import { getInstance} from '@module-federation/enhanced/runtime'
 
 class Auth0AppService extends BaseAppService implements IAppService{
   constructor(private auth0Client: Auth0Client, private topLevelCtx: TopLevelCtx){
+    console.log('asdas')
+    const mf = getInstance()
+    mf?.registerRemotes([
+      {
+        name: 'mf_test_provider',
+        entry: 'http://localhost:3001/mf-manifest.json',
+      }
+    ])
     super();
   }
 

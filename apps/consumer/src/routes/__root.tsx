@@ -1,14 +1,14 @@
 import { BasicContainer } from "@computerwwwizards/dependency-injection";
 import { createBrowserRouter, Outlet, RouterContextProvider, createContext } from "react-router";
 import type { PatchRoutesService } from "./(global)/-config/patch-routes/types";
-
+import { getInstance} from '@module-federation/enhanced/runtime'
 
 export const rootContext = createContext<BasicContainer<any>>(null!)
 
 export const createRouter = function<Services extends {
   "route-service": PatchRoutesService
 }>(ctx: BasicContainer<Services>){
-
+const mf = getInstance()
 
   return createBrowserRouter([
     {
@@ -19,7 +19,26 @@ export const createRouter = function<Services extends {
       },
       Component: ()=>{
         return <Outlet />
-      }
+      },
+      async loader(){
+        const routerService = ctx.get('route-service')
+        const { default: patchOnNavigation } = await mf?.loadRemote('mf_test_provider/patch-on-navigation') as any
+        routerService.register(patchOnNavigation)
+      },
+      children: [
+        {
+          index: true,
+          async lazy(){
+           
+          
+           const { default: createAppCard } = await mf?.loadRemote('mf_test_provider/create-app-card') as any
+            const data = createAppCard(ctx)
+           return {
+             Component: ()=><data.Component />
+           }
+          }
+        }
+      ]
     }
   ], 
   {

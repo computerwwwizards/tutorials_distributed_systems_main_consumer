@@ -1,3 +1,4 @@
+import path from 'path'
 import { createModuleFederationConfig } from '@module-federation/rsbuild-plugin';
 
 export default createModuleFederationConfig({
@@ -13,4 +14,7 @@ export default createModuleFederationConfig({
       singleton: true,
     }
   },
+  runtimePlugins: [
+    path.join(__dirname, './src/runtime-plugins/fallback.tsx')
+  ]
 });

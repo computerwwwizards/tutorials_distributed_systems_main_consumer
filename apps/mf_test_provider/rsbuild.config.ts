@@ -8,4 +8,7 @@ export default defineConfig({
   server: {
     port: 3001,
   },
+  output: {
+    assetPrefix: process.env.PUBLIC_MF_PUBLIC_PATH
+  }
 });

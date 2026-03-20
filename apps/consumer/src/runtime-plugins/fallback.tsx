@@ -50,7 +50,6 @@ const fallbackPlugin = (): ModuleFederationRuntimePlugin => {
     // way an empty metaData does. The metaData structure must satisfy generateSnapshotFromManifest:
     // https://github.com/module-federation/core/blob/v2.2.3/packages/sdk/src/generateSnapshotFromManifest.ts#L135
     async errorLoadRemote(args) {
-      console.log("🚀 ~ fallbackPlugin ~ args:", args)
       if (args.lifecycle === 'afterResolve') {
         return {
           id: args.id,
@@ -82,13 +81,13 @@ const fallbackPlugin = (): ModuleFederationRuntimePlugin => {
       // consumer can destructure `{ default }` and call it without crashing.
       if (args.id.endsWith('/create-app-card')) {
         return {
-          default: () => ({ id: 'offline', Component: () => 'offline card here :(' }),
+          default: () => ({ id: 'offline', Component: () => null }),
         };
       }
 
       if (args.id.endsWith('/patch-on-navigation')) {
         return {
-          default: () => {},
+          default: () => { },
         };
       }
 

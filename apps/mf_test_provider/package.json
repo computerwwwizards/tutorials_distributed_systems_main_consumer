@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "dev": "rsbuild dev --open",
+    "dev": "rsbuild dev",
     "build": "rsbuild build",
     "preview": "rsbuild preview"
   },
@@ -13,10 +13,11 @@
     "react-router": "^7.13.1"
   },
   "devDependencies": {
+    "@module-federation/rsbuild-plugin": "^2.2.3",
     "@rsbuild/core": "1.7.3",
     "@rsbuild/plugin-react": "^1.4.6",
+    "@types/node": "^25.5.0",
     "@types/react": "^19.2.14",
-    "@types/react-dom": "^19.2.3",
-    "@module-federation/rsbuild-plugin":"^2.2.3"
+    "@types/react-dom": "^19.2.3"
   }
 }

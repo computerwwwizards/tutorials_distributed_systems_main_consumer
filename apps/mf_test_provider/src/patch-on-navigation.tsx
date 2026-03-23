@@ -10,12 +10,19 @@ const patchOnNavigation = function patchOnNavigation(
   if (path.startsWith('/test')) {
     patch(null, [{
       path: '/test',
-      loader() {
+      async loader() {
         const headerService = ctx.get('header-components-service');
+
+        const [logoResult, navigationResult, userProfileResult] = await Promise.allSettled([
+          headerService.getLogo(),
+          headerService.getNavigation(),
+          headerService.getUserProfile(),
+        ]);
+
         return {
-          logo: headerService.getLogo(),
-          navigation: headerService.getNavigation(),
-          userProfile: headerService.getUserProfile(),
+          logo: logoResult.status === 'fulfilled' ? logoResult.value : 'Logo could not be loaded',
+          navigation: navigationResult.status === 'fulfilled' ? navigationResult.value : 'Navigation could not be loaded',
+          userProfile: userProfileResult.status === 'fulfilled' ? userProfileResult.value : 'User profile could not be loaded',
         };
       },
       Component: () => {

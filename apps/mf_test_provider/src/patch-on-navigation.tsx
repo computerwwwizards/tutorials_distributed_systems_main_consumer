@@ -10,12 +10,12 @@ const patchOnNavigation = function patchOnNavigation(
   if (path.startsWith('/test')) {
     patch(null, [{
       path: '/test',
-      loader() {
+      async loader() {
         const headerService = ctx.get('header-components-service');
         return {
-          logo: headerService.getLogo(),
-          navigation: headerService.getNavigation(),
-          userProfile: headerService.getUserProfile(),
+          logo: await headerService.getLogo(),
+          navigation: await headerService.getNavigation(),
+          userProfile: await headerService.getUserProfile(),
         };
       },
       Component: () => {

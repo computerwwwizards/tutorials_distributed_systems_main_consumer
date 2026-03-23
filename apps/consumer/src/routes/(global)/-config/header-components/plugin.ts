@@ -5,13 +5,13 @@ export default function plugin(ctx: GloablCtx) {
     scope: 'singleton',
     provider() {
       return new class {
-        getLogo() {
+        async getLogo() {
           return "logo"
         }
-        getNavigation() {
+        async getNavigation() {
           return "navigation"
         }
-        getUserProfile() {
+        async getUserProfile() {
           return "user profile"
         }
       }
@@ -26,13 +26,13 @@ if (import.meta.env.DEV) {
         scope: "singleton",
         provider() {
           return new class {
-            getLogo() {
+            async getLogo() {
               return "logo"
             }
-            getNavigation() {
+            async getNavigation() {
               return "navigation"
             }
-            getUserProfile() {
+            async getUserProfile() {
               return "user profile"
             }
           }

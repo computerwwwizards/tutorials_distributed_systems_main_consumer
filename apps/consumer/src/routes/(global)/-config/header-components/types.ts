@@ -1,9 +1,9 @@
 import type { ReactNode } from "react";
 
 export interface HeaderComponentsService {
-  getLogo(): ReactNode;
-  getNavigation(): ReactNode;
-  getUserProfile(): ReactNode;
+  getLogo(): Promise<ReactNode>;
+  getNavigation(): Promise<ReactNode>;
+  getUserProfile(): Promise<ReactNode>;
 }
 
 declare module '../types.ts' {

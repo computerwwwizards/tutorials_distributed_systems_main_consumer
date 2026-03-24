@@ -1,11 +1,11 @@
 import { Outlet, PatchRoutesOnNavigationFunctionArgs, useLoaderData } from "react-router";
 
-const patchOnNavigation = function patchOnNavigation(
+const patchOnNavigation = async function patchOnNavigation(
   {
     patch,
     path,
   }: PatchRoutesOnNavigationFunctionArgs,
-  ctx: any
+  { ctx }: { ctx: any }
 ) {
   if (path.startsWith('/test')) {
     patch(null, [{

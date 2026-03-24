@@ -6,7 +6,7 @@ import userAccesPlugin from './routes/(global)/-config/user-acces-type/plugin'
 import headerComponentsServicePlugin from './routes/(global)/-config/header-components/plugin'
 import { BasicChildContainer } from "@computerwwwizards/dependency-injection"
 import type { GlobalServices } from "./routes/(global)/-config/types"
-import routeServicePlugin from "./routes/(global)/-config/patch-routes/plugin"
+import remoteServicePlugin from "./routes/(global)/-config/remote-service/plugin"
 export interface AppProps {
   topLevelCtx?: TopLevelCtx
 }
@@ -23,7 +23,7 @@ export default function App({
       container.useMocks()
 
     container
-      .use(routeServicePlugin as any)
+      .use(remoteServicePlugin as any)
       .use(userAccesPlugin)
       .use(headerComponentsServicePlugin as any)
 

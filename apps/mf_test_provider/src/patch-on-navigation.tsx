@@ -1,11 +1,11 @@
 import { Outlet, PatchRoutesOnNavigationFunctionArgs, useLoaderData } from "react-router";
 
-const patchOnNavigation = function patchOnNavigation(
+const patchOnNavigation = async function patchOnNavigation(
   {
     patch,
     path,
   }: PatchRoutesOnNavigationFunctionArgs,
-  ctx: any
+  { ctx }: { ctx: any }
 ) {
   if (path.startsWith('/test')) {
     patch(null, [{
@@ -31,13 +31,13 @@ const patchOnNavigation = function patchOnNavigation(
           <>
             <header>
               <div>
-                {logo}
-                {navigation}
+                <div style={{ border: '2px solid blue' }}>{logo}</div>
+                <div style={{ border: '2px solid blue' }}>{navigation}</div>
               </div>
 
               <p>My amazing header</p>
 
-              {userProfile}
+              <div style={{ border: '2px solid blue' }}>{userProfile}</div>
             </header>
             <Outlet />
           </>

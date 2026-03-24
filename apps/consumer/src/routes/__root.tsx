@@ -1,16 +1,14 @@
 import { BasicContainer } from "@computerwwwizards/dependency-injection";
-import { createBrowserRouter, Outlet, RouterContextProvider, createContext } from "react-router";
-import type { PatchRoutesService } from "./(global)/-config/patch-routes/types";
-import { getInstance } from '@module-federation/enhanced/runtime'
+import { createBrowserRouter, Outlet, RouterContextProvider, createContext, useLoaderData } from "react-router";
 import OnError from "../Error";
+import type { GlobalServices } from "./(global)/-config/types";
+import type { ComponentContent } from "./(global)/-config/remote-service/types";
+import FastAccessCards from "./-components/FastAccessCards";
+import AppCard from "./-components/AppCard";
 
 export const rootContext = createContext<BasicContainer<any>>(null!)
 
-export const createRouter = function <Services extends {
-  "route-service": PatchRoutesService
-}>(ctx: BasicContainer<Services>) {
-  const mf = getInstance()
-
+export const createRouter = function (ctx: BasicContainer<GlobalServices>) {
   return createBrowserRouter([
     {
       path: '/',
@@ -22,19 +20,46 @@ export const createRouter = function <Services extends {
         return <Outlet />
       },
       errorElement: <OnError />,
-      async loader() {
-        const routerService = ctx.get('route-service')
-        const { default: patchOnNavigation } = await mf?.loadRemote('mf_test_provider/patch-on-navigation') as any
-        routerService.register(patchOnNavigation)
-      },
       children: [
         {
           index: true,
           async lazy() {
-            const { default: createAppCard } = await mf?.loadRemote('mf_test_provider/create-app-card') as any
-            const data = createAppCard(ctx)
             return {
-              Component: () => <data.Component />
+              loader: async () => {
+                const remoteService = ctx.get('remote-service')
+                const [createFastAccessCards, createAppCards] = await Promise.all([
+                  remoteService.getCreateFastAccessCards(),
+                  remoteService.getCreateAppCards(),
+                ])
+
+                const fastAccessCardsPromises = createFastAccessCards.map((createFastAccessCard) => createFastAccessCard(ctx))
+                const appCardPromises = createAppCards.map((createAppCard) => createAppCard(ctx))
+
+                return { fastAccessCardsPromises, appCardPromises }
+              },
+              Component: () => {
+                const { fastAccessCardsPromises, appCardPromises } = useLoaderData<{
+                  fastAccessCardsPromises: Promise<{ data: Array<ComponentContent<any>>; name: string }>[]
+                  appCardPromises: Promise<ComponentContent<any>>[]
+                }>()
+
+                return (
+                  <div>
+                    <h2>Top apps</h2>
+                    {
+                      fastAccessCardsPromises.map((fastAccessCardsPromise, index) => (
+                        <FastAccessCards key={index} fastAccessCardsPromise={fastAccessCardsPromise} />
+                      ))
+                    }
+                    <h4>Products</h4>
+                    {
+                      appCardPromises.map((appCardPromise, index) => (
+                        <AppCard key={index} appCardPromise={appCardPromise} />
+                      ))
+                    }
+                  </div>
+                )
+              }
             }
           }
         }
@@ -42,11 +67,10 @@ export const createRouter = function <Services extends {
     }
   ],
     {
-      async patchRoutesOnNavigation(...args) {
-
-        //TODO: evalaute this to be a promise
-        const routeService = ctx.get("route-service")
-        await routeService.execute(...args)
+      async patchRoutesOnNavigation(args) {
+        const routeService = ctx.get("remote-service")
+        const patchOnNavigation = await routeService.getPatchOnNavigationByPath(args.path)
+        await patchOnNavigation(args, { ctx })
       },
       async getContext() {
         const context = new RouterContextProvider()

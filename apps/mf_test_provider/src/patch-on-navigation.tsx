@@ -31,13 +31,13 @@ const patchOnNavigation = async function patchOnNavigation(
           <>
             <header>
               <div>
-                {logo}
-                {navigation}
+                <div style={{ border: '2px solid blue' }}>{logo}</div>
+                <div style={{ border: '2px solid blue' }}>{navigation}</div>
               </div>
 
               <p>My amazing header</p>
 
-              {userProfile}
+              <div style={{ border: '2px solid blue' }}>{userProfile}</div>
             </header>
             <Outlet />
           </>

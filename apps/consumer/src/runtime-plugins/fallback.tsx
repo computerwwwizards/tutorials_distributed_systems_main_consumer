@@ -81,13 +81,13 @@ const fallbackPlugin = (): ModuleFederationRuntimePlugin => {
       // consumer can destructure `{ default }` and call it without crashing.
       if (args.id.endsWith('/create-app-card')) {
         return {
-          default: () => ({ id: 'offline', Component: () => null }),
+          default: async () => ({ name: 'offline', Component: null, props: {} }),
         };
       }
 
       if (args.id.endsWith('/patch-on-navigation')) {
         return {
-          default: () => { },
+          default: async (_args: unknown, _appArgs: unknown) => { },
         };
       }
 

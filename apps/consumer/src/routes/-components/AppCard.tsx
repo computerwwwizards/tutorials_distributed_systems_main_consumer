@@ -7,11 +7,12 @@ interface AppCardArgs {
 }
 
 export default function AppCard({ appCardPromise }: AppCardArgs) {
-  const { name, Component = DefaultComponent, props } = use(appCardPromise)
+  const { Component, props } = use(appCardPromise)
+
+  if (!Component) return "Not disponible :("
 
   return (
     <div>
-      <p>{name}</p>
       <Component {...props} />
     </div>
   )

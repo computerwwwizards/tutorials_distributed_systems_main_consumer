@@ -11,7 +11,7 @@ export default async function createAppCard(_ctx: any, _meta?: any): Promise<Com
   return {
     name: "test",
     Component: () => (
-      <article>
+      <article style={{ border: '2px solid red' }}>
         <Link to="/test">To Test</Link>
       </article>
     ),

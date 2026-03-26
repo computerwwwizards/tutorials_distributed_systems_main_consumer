@@ -1,5 +1,6 @@
 {
   "name": "@main_consumer/mf_test_provider",
+  "type": "module",
   "private": true,
   "version": "1.0.0",
   "scripts": {
